@@ -12,6 +12,9 @@
         android:theme="@style/Theme.Candy_Halo"
         tools:targetApi="31">
         <activity
+            android:name=".Candy_Halo"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
