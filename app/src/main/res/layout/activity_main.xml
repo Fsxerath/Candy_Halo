@@ -8,13 +8,37 @@
     android:background="@drawable/fondo_mainactivity"
     >
 
-    <Button
-        android:id="@+id/btn_StartGame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
+    <LinearLayout
+        android:layout_width="410dp"
+        android:layout_height="598dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/easy"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/btn_redondo"
+            app:srcCompat="@drawable/facil_sinfondo"
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:id="@+id/normal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/btn_redondo"
+            app:srcCompat="@drawable/normal_sinfondo"
+            android:layout_weight="1"
+            />
+        <ImageButton
+            android:id="@+id/hard"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/btn_redondo"
+            app:srcCompat="@drawable/dificilsinfondo"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

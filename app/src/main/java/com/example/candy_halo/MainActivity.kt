@@ -12,7 +12,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.btnStartGame.setOnClickListener {
+        binding.easy.setOnClickListener {
+            startGame()
+        }
+        binding.normal.setOnClickListener {
+            startGame()
+        }
+        binding.hard.setOnClickListener {
             startGame()
         }
     }

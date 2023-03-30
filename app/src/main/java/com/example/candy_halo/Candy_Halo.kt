@@ -7,6 +7,7 @@ import android.util.DisplayMetrics
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
 import com.example.candy_halo.databinding.ActivityCandyHaloBinding
 import kotlin.random.Random
 
@@ -15,6 +16,7 @@ class Candy_Halo : AppCompatActivity() {
     private lateinit var mHand: Handler
     private val time: Int = 100
     private var points: Int = 0
+    private var moves_player : Int = 0
     private val icons_img = listOf(
         R.drawable.arbitrer_icon,
         R.drawable.cortana_icon,
@@ -37,6 +39,7 @@ class Candy_Halo : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCandyHaloBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        moves_player = 0
         val display = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(display)
 
@@ -187,6 +190,8 @@ class Candy_Halo : AppCompatActivity() {
         Icons_Halo.get(icon_Move).tag = groud
         Icons_Halo.get(icon_Replace).tag = groud2
 
+        moves_player++
+        binding.moves.text = moves_player.toString()
     }
 
     fun board (){
@@ -206,6 +211,22 @@ class Candy_Halo : AppCompatActivity() {
             binding.board.addView(icon)
             Icons_Halo.add(icon)
         }
+    }
+
+    fun finishGame(){
+
+    }
+
+    private fun MostrarResultados(title: String, message: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(title)
+        builder.setMessage(message)
+        builder.setPositiveButton("OK") { dialog, which ->
+            dialog.dismiss()
+            finish()
+        }
+        builder.setCancelable(false)
+        builder.show()
     }
 
 }
