@@ -14,6 +14,7 @@ class Candy_Halo : AppCompatActivity() {
     private lateinit var binding: ActivityCandyHaloBinding
     private lateinit var mHand: Handler
     private val time: Int = 100
+    private var points: Int = 0
     private val icons_img = listOf(
         R.drawable.arbitrer_icon,
         R.drawable.cortana_icon,
@@ -29,7 +30,7 @@ class Candy_Halo : AppCompatActivity() {
     private val Icons_Halo = mutableListOf<ImageView>()
     private var icon_Move: Int = 0
     private var icon_Replace: Int = 0
-    private var noIcon: Int = R.drawable.ic_launcher_background
+    private var noIcon: Int = R.drawable.transparent
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +49,58 @@ class Candy_Halo : AppCompatActivity() {
         starCheck()
     }
 
+
+
+    fun NewIcons(){
+        val rows = listOf(0,1,2,3,4,5,6,7)
+        for (i in 55 downTo 0){
+            if(Icons_Halo[i+noOfBlocks].tag as Int == noIcon){
+
+                Icons_Halo.get(i+noOfBlocks).setImageResource(Icons_Halo.get(i).getTag() as Int)
+                Icons_Halo[i + noOfBlocks].tag = Icons_Halo[i].tag as Int
+                Icons_Halo.get(i).setImageResource(noIcon)
+                Icons_Halo.get(i).setTag(noIcon)
+
+                if(rows.contains(i) && Icons_Halo.get(i).getTag() as Int == noIcon){
+                    val ran: Int = Random.nextInt(0,icons_img.size)
+                    Icons_Halo.get(i).setImageResource(icons_img.get(ran))
+                    Icons_Halo.get(i).tag = icons_img.get(ran)
+                }
+            }
+        }
+        for(i in 0 until 8){
+            if(Icons_Halo.get(i).getTag() == noIcon){
+                val ran: Int = Random.nextInt(0,icons_img.size)
+                Icons_Halo.get(i).setImageResource(icons_img.get(ran))
+                Icons_Halo.get(i).tag = icons_img.get(ran)
+            }
+        }
+    }
+
+    fun columnThree(){
+        for (i in 0..47){
+            var icon_chose = Icons_Halo.get(i).getTag()
+            var empty = Icons_Halo.get(i).getTag() == noIcon
+            var x = i
+            if (Icons_Halo.get(x).tag as Int == icon_chose && !empty
+                && Icons_Halo.get(x+noOfBlocks).tag as Int == icon_chose &&
+                Icons_Halo.get(x+2*noOfBlocks).getTag()==icon_chose)
+            {
+                points+=3
+                binding.points.text = points.toString()
+                Icons_Halo.get(x).setImageResource(noIcon)
+                Icons_Halo.get(x).setTag(noIcon)
+                x += noOfBlocks
+                Icons_Halo.get(x).setImageResource(noIcon)
+                Icons_Halo.get(x).setTag(noIcon)
+                x += noOfBlocks
+                Icons_Halo.get(x).setImageResource(noIcon)
+                Icons_Halo.get(x).setTag(noIcon)
+            }
+        }
+        NewIcons()
+    }
+
     fun rowThree (){
         for (i in 0..62){
             var icon_chose = Icons_Halo.get(i).getTag()
@@ -56,7 +109,11 @@ class Candy_Halo : AppCompatActivity() {
             if(!invalid.contains(i)){
                 var x = i
                 if (Icons_Halo.get(x++).tag as Int == icon_chose && !empty
-                    && Icons_Halo.get(x++).tag as Int == icon_chose && Icons_Halo.get(x).getTag()==icon_chose){
+                    && Icons_Halo.get(x++).tag as Int == icon_chose &&
+                    Icons_Halo.get(x).getTag()==icon_chose)
+                {
+                    points+=3
+                    binding.points.text = points.toString()
                     Icons_Halo.get(x).setImageResource(noIcon)
                     Icons_Halo.get(x).setTag(noIcon)
                     x--
@@ -68,12 +125,15 @@ class Candy_Halo : AppCompatActivity() {
                 }
             }
         }
+        NewIcons()
     }
 
     private var repeat : Runnable = Runnable {
         run {
             try {
                 rowThree()
+                columnThree()
+                NewIcons()
             }finally {
                 mHand.postDelayed(repeat, time.toLong())
             }

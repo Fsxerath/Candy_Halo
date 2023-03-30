@@ -34,8 +34,8 @@
                     android:textColor="@color/white"
                     android:layout_weight="0.7"
                     android:text="Score:"
-                    android:textSize="20dp"
-
+                    android:textSize="50dp"
+                    android:fontFamily="@font/halo_font"
                     />
 
                 <TextView
@@ -45,7 +45,8 @@
                     android:layout_weight="0.3"
                     android:gravity="center_horizontal"
                     android:textColor="@color/white"
-                    android:textSize="25dp"
+                    android:textSize="30dp"
+                    android:fontFamily="@font/halo_font"
                     android:text="0" />
             </LinearLayout>
 
