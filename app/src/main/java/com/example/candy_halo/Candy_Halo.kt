@@ -33,13 +33,31 @@ class Candy_Halo : AppCompatActivity() {
     private var icon_Move: Int = 0
     private var icon_Replace: Int = 0
     private var noIcon: Int = R.drawable.transparent
+    private var pointsToBeat:Int = 0
+    private lateinit var difficulty: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCandyHaloBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        moves_player = 0
+        difficulty = intent.getStringExtra("difficulty").toString()
+        moves_player = when(difficulty.lowercase().trim()){
+            "easy" -> 40
+            "normal" -> 20
+            "hard" -> 10
+            else -> {
+                40
+            }
+        }
+        pointsToBeat = when(difficulty.lowercase().trim()){
+            "easy" -> 350
+            "normal" -> 200
+            "hard" -> 100
+            else -> {
+                35
+            }
+        }
         val display = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(display)
 
@@ -89,7 +107,7 @@ class Candy_Halo : AppCompatActivity() {
                 && Icons_Halo.get(x+noOfBlocks).tag as Int == icon_chose &&
                 Icons_Halo.get(x+2*noOfBlocks).getTag()==icon_chose)
             {
-                points+=3
+                points+=15
                 binding.points.text = points.toString()
                 Icons_Halo.get(x).setImageResource(noIcon)
                 Icons_Halo.get(x).setTag(noIcon)
@@ -99,6 +117,9 @@ class Candy_Halo : AppCompatActivity() {
                 x += noOfBlocks
                 Icons_Halo.get(x).setImageResource(noIcon)
                 Icons_Halo.get(x).setTag(noIcon)
+            }
+            else{
+                //points -= 5
             }
         }
         NewIcons()
@@ -125,6 +146,8 @@ class Candy_Halo : AppCompatActivity() {
                     x--
                     Icons_Halo.get(x).setImageResource(noIcon)
                     Icons_Halo.get(x).setTag(noIcon)
+                }else{
+                    //points -= 5
                 }
             }
         }
@@ -190,8 +213,16 @@ class Candy_Halo : AppCompatActivity() {
         Icons_Halo.get(icon_Move).tag = groud
         Icons_Halo.get(icon_Replace).tag = groud2
 
-        moves_player++
+        moves_player--
         binding.moves.text = moves_player.toString()
+
+        if(moves_player == 0 && points >= pointsToBeat){
+            MostrarResultados("YOU WON!", "POINTS TO BEAT:$pointsToBeat \nYOUR POINTS: $points")
+            gameFinised()
+        }else if(moves_player == 0 && points < pointsToBeat){
+            MostrarResultados("YOU LOSE!", "POINTS TO BEAT:$pointsToBeat \nYOUR POINTS: $points")
+            gameFinised()
+        }
     }
 
     fun board (){
@@ -213,11 +244,11 @@ class Candy_Halo : AppCompatActivity() {
         }
     }
 
-    fun finishGame(){
-
+    fun gameFinised(){
+        //super.onDestroy()
     }
 
-    private fun MostrarResultados(title: String, message: String) {
+    private fun MostrarResultados(title: String, message:String) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(title)
         builder.setMessage(message)

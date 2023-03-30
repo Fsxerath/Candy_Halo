@@ -13,18 +13,19 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.easy.setOnClickListener {
-            startGame()
+            startGame("easy")
         }
         binding.normal.setOnClickListener {
-            startGame()
+            startGame("normal")
         }
         binding.hard.setOnClickListener {
-            startGame()
+            startGame("hard")
         }
     }
 
-    fun startGame(){
+    fun startGame(difficulty:String){
         val intent = Intent(this, Candy_Halo::class.java)
+        intent.putExtra("difficulty", difficulty)
         startActivity(intent)
     }
 }
