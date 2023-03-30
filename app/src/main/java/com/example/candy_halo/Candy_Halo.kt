@@ -2,6 +2,7 @@ package com.example.candy_halo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.DisplayMetrics
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
@@ -10,7 +11,9 @@ import com.example.candy_halo.databinding.ActivityCandyHaloBinding
 import kotlin.random.Random
 
 class Candy_Halo : AppCompatActivity() {
-    lateinit var binding: ActivityCandyHaloBinding
+    private lateinit var binding: ActivityCandyHaloBinding
+    private lateinit var mHand: Handler
+    private val time: Int = 100
     private val icons_img = listOf(
         R.drawable.arbitrer_icon,
         R.drawable.cortana_icon,
@@ -26,6 +29,7 @@ class Candy_Halo : AppCompatActivity() {
     private val Icons_Halo = mutableListOf<ImageView>()
     private var icon_Move: Int = 0
     private var icon_Replace: Int = 0
+    private var noIcon: Int = R.drawable.ic_launcher_background
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +44,44 @@ class Candy_Halo : AppCompatActivity() {
         widthofBlock = widthofScreen / noOfBlocks
         board()
         AddListener()
+        mHand = Handler()
+        starCheck()
+    }
+
+    fun rowThree (){
+        for (i in 0..62){
+            var icon_chose = Icons_Halo.get(i).getTag()
+            var empty = Icons_Halo.get(i).getTag() == noIcon
+            val invalid= listOf(6,7,14,15,22,23,30,31,38,39,46,47,54,55)
+            if(!invalid.contains(i)){
+                var x = i
+                if (Icons_Halo.get(x++).tag as Int == icon_chose && !empty
+                    && Icons_Halo.get(x++).tag as Int == icon_chose && Icons_Halo.get(x).getTag()==icon_chose){
+                    Icons_Halo.get(x).setImageResource(noIcon)
+                    Icons_Halo.get(x).setTag(noIcon)
+                    x--
+                    Icons_Halo.get(x).setImageResource(noIcon)
+                    Icons_Halo.get(x).setTag(noIcon)
+                    x--
+                    Icons_Halo.get(x).setImageResource(noIcon)
+                    Icons_Halo.get(x).setTag(noIcon)
+                }
+            }
+        }
+    }
+
+    private var repeat : Runnable = Runnable {
+        run {
+            try {
+                rowThree()
+            }finally {
+                mHand.postDelayed(repeat, time.toLong())
+            }
+        }
+
+    }
+    fun starCheck(){
+        repeat.run()
     }
 
     fun AddListener(){
@@ -104,8 +146,6 @@ class Candy_Halo : AppCompatActivity() {
             binding.board.addView(icon)
             Icons_Halo.add(icon)
         }
-
-
     }
 
 }
